@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters import rest_framework as filters
 
 from . import models, serializers
+from .paginators import CustomPagination
 from .filters import BookFilter
 
 
@@ -47,7 +48,7 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BookSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = BookFilter
-
+    pagination_class = CustomPagination
 
     @decorators.action(methods=['GET'], detail=False)
     def statistics(self, request, *args, **kwargs):
