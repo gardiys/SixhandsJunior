@@ -1,7 +1,11 @@
 from rest_framework import status, viewsets, mixins, generics, decorators, views
 from rest_framework.response import Response
 
+from django_filters import rest_framework as filters
+
 from . import models, serializers
+from .filters import BookFilter
+
 
 
 @decorators.api_view(["GET", "POST"])
@@ -41,6 +45,9 @@ class BookGenericDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = models.Book.objects.all()
     serializer_class = serializers.BookSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = BookFilter
+
 
     @decorators.action(methods=['GET'], detail=False)
     def statistics(self, request, *args, **kwargs):
