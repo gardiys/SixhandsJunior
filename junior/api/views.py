@@ -1,9 +1,10 @@
-from rest_framework import status, viewsets, mixins, generics, decorators, views
+from rest_framework import status, viewsets, mixins, generics, decorators, views,\
+    permissions as rest_permissions
 from rest_framework.response import Response
 
 from django_filters import rest_framework as filters
 
-from . import models, serializers
+from . import models, serializers, permissions
 from .paginators import CustomPagination
 from .filters import BookFilter
 
@@ -49,6 +50,7 @@ class BookViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = BookFilter
     pagination_class = CustomPagination
+    permission_classes = [rest_permissions.IsAuthenticated, permissions.IsManager]
 
     @decorators.action(methods=['GET'], detail=False)
     def statistics(self, request, *args, **kwargs):

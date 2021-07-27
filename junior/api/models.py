@@ -1,10 +1,22 @@
 from django.db import models
 
 
-# Create your models here.
+from django.contrib.auth.models import AbstractUser
+
+
+class UserRole(models.IntegerChoices):
+    USER = 1
+    ADMIN = 2
+    MANAGER = 3
+
+
 class BookCover(models.IntegerChoices):
     HARD = 1
     SOFT = 2
+
+
+class User(AbstractUser):
+    role = models.PositiveSmallIntegerField(choices=UserRole.choices, default=UserRole.USER)
 
 
 class Author(models.Model):
